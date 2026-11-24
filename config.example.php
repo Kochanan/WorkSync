@@ -1,9 +1,9 @@
 <?php
 // Copy this file to config.php and enter your database settings.
-$DB_HOST = 'localhost';
-$DB_USER = 'your_database_user';
-$DB_PASS = 'your_database_password';
-$DB_NAME = 'worksync';
+$DB_HOST = getenv('DB_HOST') ?: 'localhost';
+$DB_USER = getenv('DB_USER') ?: 'your_database_user';
+$DB_PASS = getenv('DB_PASS') ?: 'your_database_password';
+$DB_NAME = getenv('DB_NAME') ?: 'worksync';
 
 mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
 

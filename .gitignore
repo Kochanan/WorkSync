@@ -1,5 +1,7 @@
 /config.php
 /mail_config.php
+/.env
+/.env.*
 /.claude/
 /.impeccable/
 /assets/uploads/*
