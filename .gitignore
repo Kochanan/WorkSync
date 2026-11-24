@@ -1,0 +1,9 @@
+/config.php
+/mail_config.php
+/.claude/
+/.impeccable/
+/assets/uploads/*
+!/assets/uploads/.htaccess
+!/assets/uploads/cat-*.svg
+!/assets/uploads/p*.jpg
+!/assets/uploads/p*.png

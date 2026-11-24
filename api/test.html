@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="th"><head><meta charset="utf-8">
+<title>WorkSync API Tester</title>
+<style>
+body{font-family:sans-serif;max-width:800px;margin:20px auto;padding:0 16px;font-size:16px;line-height:1.6;color:#0d1f35}
+/* กำหนดขนาดหัวข้อให้ชัด แต่ละขั้นห่างกันอย่างน้อย 1.25 เท่า ไม่งั้นลำดับความสำคัญจะแบน */
+h2{font-size:28px;line-height:1.25;margin-bottom:6px}
+h3{font-size:20px;line-height:1.3;margin-top:32px;margin-bottom:8px}
+button{background:#0d2137;color:#fff;border:none;padding:8px 16px;border-radius:8px;cursor:pointer;margin:4px;font-size:14px}
+pre{background:#f0f2f6;padding:12px;border-radius:8px;overflow:auto;font-size:13px}
+input{padding:8px;border:1px solid #ccc;border-radius:6px;margin:4px;font-size:14px}
+</style></head><body>
+<h2>🧪 WorkSync API Tester</h2>
+<p>ทดสอบ API endpoints ก่อนเอาไปใช้ใน Flutter</p>
+<!-- เครื่องมือสำหรับนักพัฒนาเท่านั้น ห้ามเปิดให้เข้าถึงบนเซิร์ฟเวอร์จริง และห้ามใส่รหัสผ่านจริงไว้เป็นค่าเริ่มต้น -->
+
+<h3>1. Login</h3>
+<input id="u" placeholder="username" autocomplete="off">
+<input id="p" type="password" placeholder="password" autocomplete="off">
+<button onclick="login()">Login</button>
+<div>Token: <code id="token">-</code></div>
+
+<h3>2. Products</h3>
+<button onclick="call('products.php?action=list')">List Products</button>
+<button onclick="call('products.php?action=categories')">Categories</button>
+
+<h3>3. Cart (ต้อง login ก่อน)</h3>
+<button onclick="call('cart.php?action=get', true)">Get Cart</button>
+
+<h3>4. Orders (ต้อง login ก่อน)</h3>
+<button onclick="call('orders.php?action=list', true)">List Orders</button>
+
+<h3>ผลลัพธ์</h3>
+<pre id="out">รอผลลัพธ์...</pre>
+
+<script>
+let TOKEN = '';
+const BASE = './';
+
+async function login() {
+  const r = await fetch(BASE + 'auth.php?action=login', {
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({username:document.getElementById('u').value, password:document.getElementById('p').value})
+  });
+  const d = await r.json();
+  if (d.token) { TOKEN = d.token; document.getElementById('token').textContent = TOKEN.slice(0,20)+'...'; }
+  document.getElementById('out').textContent = JSON.stringify(d, null, 2);
+}
+
+async function call(endpoint, needAuth=false) {
+  const opts = { headers:{} };
+  if (needAuth) opts.headers['Authorization'] = 'Bearer ' + TOKEN;
+  const r = await fetch(BASE + endpoint, opts);
+  const d = await r.json();
+  document.getElementById('out').textContent = JSON.stringify(d, null, 2);
+}
+</script>
+</body></html>

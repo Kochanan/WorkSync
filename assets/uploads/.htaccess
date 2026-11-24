@@ -1,0 +1,22 @@
+# โฟลเดอร์รูปที่ผู้ใช้อัปโหลด: ห้ามรันโค้ดใด ๆ ในนี้เด็ดขาด
+# ถ้ามีคนแอบอัปโหลด shell.php เข้ามาได้ ไฟล์จะถูกส่งเป็นข้อความธรรมดา ไม่ถูกรัน
+<IfModule php_module>
+    php_flag engine off
+</IfModule>
+RemoveHandler .php .phtml .php3 .php4 .php5 .php7 .php8 .phar .pht .phps
+RemoveType .php .phtml .php3 .php4 .php5 .php7 .php8 .phar .pht .phps
+Options -Indexes -ExecCGI
+
+# อนุญาตเฉพาะไฟล์รูป
+<FilesMatch "(?i)\.(jpe?g|png|gif|webp|svg)$">
+    Require all granted
+</FilesMatch>
+<FilesMatch "(?i)^(?!.*\.(jpe?g|png|gif|webp|svg)$).*$">
+    Require all denied
+</FilesMatch>
+
+<IfModule mod_headers.c>
+    Header set X-Content-Type-Options "nosniff"
+    # SVG มีสคริปต์ฝังได้: บังคับ sandbox ไม่ให้สคริปต์รันแม้เปิดไฟล์ตรง ๆ
+    Header set Content-Security-Policy "default-src 'none'; img-src 'self' data:; style-src 'unsafe-inline'; sandbox"
+</IfModule>

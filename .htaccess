@@ -1,0 +1,40 @@
+Options -Indexes
+
+# ไฟล์ข้อมูลและเอกสาร ห้ามเปิดอ่านผ่านเว็บ
+<FilesMatch "\.(sql|log|env|ini|md|bak|old)$">
+    Order Allow,Deny
+    Deny from all
+</FilesMatch>
+
+# กันทุกอย่างที่ขึ้นต้นด้วยจุด เช่น .git .gitignore .claude
+# สำคัญ: ถ้า .git เข้าถึงได้จากเว็บ คนอื่นดึงซอร์สโค้ดทั้งโปรเจกต์
+# พร้อมประวัติการแก้ไขไปได้ทั้งหมด โดยไม่ต้องเจาะอะไรเลย
+RedirectMatch 404 /\.(?!well-known)
+
+# ไฟล์ที่มีไว้ include เท่านั้น ห้ามเรียกตรงจากเบราว์เซอร์
+# (เรียกตรงแล้วอาจโชว์ error ที่บอก path เครื่อง หรือหลุดเนื้อหาบางส่วน)
+<FilesMatch "^(config|init|navbar|mailer|mail_config|mail_config\.example|_bootstrap)\.php$">
+    Require all denied
+</FilesMatch>
+<FilesMatch "(?i)\.(ps1|cmd|bat|sh|json|lock)$">
+    Require all denied
+</FilesMatch>
+# หน้าทดสอบ API ใช้ตอนพัฒนาเท่านั้น (เปิดผ่าน php -S หรือเอาบรรทัดนี้ออกชั่วคราว)
+RedirectMatch 404 (?i)/api/test\.html$
+# สคริปต์ล็อก IP ไม่ใช่ส่วนของเว็บ
+RedirectMatch 404 (?i)/Lock-IP-Win11(/|$)
+
+# ไม่โชว์ error ดิบบนหน้าเว็บ (บอก path เครื่องและโครงสร้างโค้ดให้ผู้โจมตี)
+# error ยังถูกบันทึกที่ C:\xampp\php\logs\php_error_log — ตอนพัฒนาอยากเห็นบนจอให้เปลี่ยนเป็น On
+<IfModule php_module>
+    php_flag display_errors Off
+    php_flag log_errors On
+</IfModule>
+
+<IfModule mod_headers.c>
+    Header always set X-Content-Type-Options "nosniff"
+    Header always set X-Frame-Options "SAMEORIGIN"
+    Header always set Referrer-Policy "strict-origin-when-cross-origin"
+    Header always unset X-Powered-By
+    Header unset X-Powered-By
+</IfModule>

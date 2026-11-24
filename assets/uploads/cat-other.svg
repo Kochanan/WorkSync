@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 750" width="600" height="750" role="img" aria-label="อื่นๆ">
+  <rect width="600" height="750" fill="#F4F4F5"/>
+  <circle cx="300" cy="320" r="118" fill="none" stroke="#3F3F46" stroke-width="4" opacity=".35"/>
+  <circle cx="300" cy="320" r="62" fill="#3F3F46" opacity=".16"/>
+  <text x="300" y="520" text-anchor="middle" font-family="Tahoma, 'Segoe UI', sans-serif" font-size="30" font-weight="bold" fill="#3F3F46">อื่นๆ</text>
+  <text x="300" y="562" text-anchor="middle" font-family="Tahoma, 'Segoe UI', sans-serif" font-size="20" fill="#3F3F46" opacity=".7">ตัวอย่างสินค้า</text>
+</svg>
